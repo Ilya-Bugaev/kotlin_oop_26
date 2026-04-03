@@ -85,14 +85,16 @@ class SingleLinkedListTest {
         }
     }
 
+    @Test
     fun `indexOf works`() {
         list.add(10)
         list.add(20)
         list.add(30)
 
-        assertEquals(2, list.indexOf(20))
+        assertEquals(1, list.indexOf(20))
     }
 
+    @Test
     fun `set works`() {
         list.add(10)
         list.add(20)
@@ -100,5 +102,40 @@ class SingleLinkedListTest {
 
         list[2] = 5
         assertEquals(5, list[2])
+    }
+
+    @Test
+    fun `remove head element`() {
+        list.add(1)
+        list.add(2)
+        list.add(3)
+
+        assertTrue(list.remove(1))   // удаляем головной элемент
+        assertEquals(2, list.size)
+        assertEquals(2, list[0])     // новым головным стал элемент 2
+        assertEquals(3, list[1])
+    }
+
+    @Test
+    fun `addFirst on empty list`() {
+        assertTrue(list.size == 0)
+        list.addFirst(42)
+
+        assertEquals(1, list.size)
+        assertEquals(42, list[0])
+    }
+
+    @Test
+    fun `set updates first and last element`() {
+        list.add(1)
+        list.add(2)
+        list.add(3)
+
+        list[0] = 99   // первый элемент
+        list[2] = 77   // последний элемент
+
+        assertEquals(99, list[0])
+        assertEquals(2, list[1])
+        assertEquals(77, list[2])
     }
 }
