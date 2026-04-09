@@ -7,22 +7,12 @@ class SingleLinkedList : CustomList {
         var next: Node? = null
     }
 
+    private  var elementCount = 0
+
     var head: Node? = null
 
-    private val inner = mutableListOf<Int>()
-
     override val size: Int
-        get() {
-            var cur = head
-            var count = 0
-
-            while (cur != null) {
-                cur = cur.next
-                count++
-            }
-
-            return count
-        }
+        get() = elementCount;
 
     override fun add(element: Int) {
         if  (head == null) {
@@ -34,6 +24,7 @@ class SingleLinkedList : CustomList {
             }
             cur?.next = Node().also { it.value = element }
         }
+        elementCount++
     }
 
     override operator fun set(index: Int, value: Int) {
@@ -44,7 +35,12 @@ class SingleLinkedList : CustomList {
             cur = cur.next
             currentIndex++
         }
-        cur?.value = value
+
+        if (cur == null) {
+            throw IndexOutOfBoundsException("Index: $index, Size: $size")
+        }
+
+        cur.value = value
     }
 
     override fun addFirst(element: Int) {
@@ -53,6 +49,7 @@ class SingleLinkedList : CustomList {
             it.next = head
         }
         head = newNode
+        elementCount++
     }
 
     override operator fun get(index: Int): Int {
@@ -71,7 +68,7 @@ class SingleLinkedList : CustomList {
     override fun indexOf(element: Int): Int {
         var count = 0
 
-        for (n in this.iterator()) {
+        for (n in this) {
             if (n == element) {
                 return count
             }
@@ -85,6 +82,7 @@ class SingleLinkedList : CustomList {
 
         if (head?.value == element) {
             head = head?.next
+            elementCount--
             return true
         }
 
@@ -92,6 +90,7 @@ class SingleLinkedList : CustomList {
         while (current?.next != null) {
             if (current.next?.value == element) {
                 current.next = current.next?.next
+                elementCount--
                 return true
             }
             current = current.next
@@ -107,9 +106,9 @@ class SingleLinkedList : CustomList {
             }
 
             override fun next(): Int {
-                val value = cur!!.value
-                cur = cur!!.next
-
+                val current = cur ?: throw NoSuchElementException()
+                val value = current.value
+                cur = current.next
                 return value
             }
         }
