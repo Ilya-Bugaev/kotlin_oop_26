@@ -12,7 +12,7 @@ class SingleLinkedList : CustomList {
     var head: Node? = null
 
     override val size: Int
-        get() = elementCount;
+        get() = elementCount
 
     override fun add(element: Int) {
         if  (head == null) {
@@ -28,6 +28,10 @@ class SingleLinkedList : CustomList {
     }
 
     override operator fun set(index: Int, value: Int) {
+        if ((index < 0) || (index >= size)) {
+            throw IndexOutOfBoundsException("Index: $index, Size: $size")
+        }
+
         var cur = head
         var currentIndex = 0
 
@@ -35,13 +39,9 @@ class SingleLinkedList : CustomList {
             cur = cur.next
             currentIndex++
         }
-
-        if (cur == null) {
-            throw IndexOutOfBoundsException("Index: $index, Size: $size")
-        }
-
-        cur.value = value
+        requireNotNull(cur).value = value
     }
+
 
     override fun addFirst(element: Int) {
         val newNode = Node().also {
@@ -53,6 +53,9 @@ class SingleLinkedList : CustomList {
     }
 
     override operator fun get(index: Int): Int {
+        if ((index < 0) || (index >= size)) {
+            throw IndexOutOfBoundsException("Index: $index, Size: $size")
+        }
         var cur = head
         var currentIndex = 0
 
@@ -60,7 +63,6 @@ class SingleLinkedList : CustomList {
             cur = cur.next
             currentIndex++
         }
-
         if (cur == null) throw IndexOutOfBoundsException("Index: $index, Size: $size")
         return cur.value
     }
